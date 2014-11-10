@@ -1,17 +1,17 @@
 function z = phi1(y)
-    z = y * exp(-1*((1+y^2)/2))
+    z = (1-y*cos(y*(%pi / 2)))*(%pi)^y
 endfunction
 
 function z = phi2(x)
-    z = x * exp(-1*((1+x^2)/2))
+    z = %pi^x
 endfunction
 
 function z = phi3(y)
-    z = 2 * y * exp(-1*((4+y^2)/2))
+    z = %pi^(1-y)*exp(y)
 endfunction
 
 function z = phi4(x)
-    z = 2 * x * exp(-1*((4+x^2)/2))
+    z = %pi^(1-x)*exp(sin(x*%pi/2))
 endfunction
 
 function z = A(x, y)
