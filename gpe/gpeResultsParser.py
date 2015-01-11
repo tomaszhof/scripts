@@ -70,24 +70,30 @@ class ResultFileParser:
 
     resTuple=(gridSize, resultsList)
     #add results to dictionary
+    print('Grid size: ' + str(gridSize))
+    if arthId not in self.parsedResults:
+      self.parsedResults[arthId]=list()
     self.parsedResults[arthId].append(resTuple)
+    
 
     return resTuple
 
   def saveResultsInCsv(self, fName):
     sep = self.outSep
-    for arthId, resTuple in self.parsedResults.items():
+    for arthId, resTupleList in self.parsedResults.items():
       outFileName=fName+str(arthId)+'.csv'
       outFile=open(outFileName, 'w')
       resLine=''
       #print(resTuple)
-      (gridSize, resultsList)=resTuple[0]
-      for r in resultsList:
-        (resPoint, resInt, resIntWidth)=r
-        (pX, pY)=resPoint
-        (iL, iR)=resInt
-        resLine+=str(pX)+sep+str(pY)+sep+str(iL)+sep+str(iR)+sep+resIntWidth+'\n'
-        outFile.write(resLine)
+      for resTuple in resTupleList:
+        (gridSize, resultsList)=resTuple
+        print('Readed grid size: '+str(gridSize))
+        for r in resultsList:
+          (resPoint, resInt, resIntWidth)=r
+          (pX, pY)=resPoint
+          (iL, iR)=resInt
+          resLine+=str(gridSize)+sep+str(pX)+sep+str(pY)+sep+str(iL)+sep+str(iR)+sep+resIntWidth+'\n'
+          outFile.write(resLine)
       outFile.close()
 
 
@@ -97,7 +103,7 @@ def main():
   dirPath = sys.argv[2]
   print('main test')
   p = ResultFileParser()
-  res=p.parseFile(inputFileName)
+  #res=p.parseFile(inputFileName)
   filesExt=".txt"
   filesBeg="test"
   files = p.getFiles(dirPath, filesExt, filesBeg)
