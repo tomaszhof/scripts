@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
 from collections import defaultdict, OrderedDict
 from itertools import cycle
 
@@ -34,12 +35,14 @@ class ResultsContainer:
      noRows = a.shape[0]
      print(a.shape)
      for i in range(noRows):
-       m=a[i,0]
-       indX=float(a[i,1])
-       indY=float(a[i,2])
-       leftEnd=a[i,3]
-       rightEnd=a[i,4]
-       intWidth=a[i,5]
+       dataTuple=tuple(a[i])
+       (m, indX, indY, leftEnd, rightEnd, intWidth) = dataTuple
+       #m=a[i,0]
+       #indX=float(a[i,1])
+       #indY=float(a[i,2])
+       #leftEnd=a[i,3]
+       #rightEnd=a[i,4]
+       #intWidth=a[i,5]
        if indX != 1.5:
           continue
        k=(indX,indY)
@@ -52,12 +55,14 @@ class ResultsContainer:
      noRows = a.shape[0]
      print(a.shape)
      for i in range(noRows):
-       m=a[i,0]
-       indX=float(a[i,1])
-       indY=float(a[i,2])
-       leftEnd=a[i,3]
-       rightEnd=a[i,4]
-       intWidth=a[i,5]
+       dataTuple=tuple(a[i])
+       (m, indX, indY, leftEnd, rightEnd, intWidth) = dataTuple
+       #m=a[i,0]
+       #indX=float(a[i,1])
+       #indY=float(a[i,2])
+       #leftEnd=a[i,3]
+       #rightEnd=a[i,4]
+       #intWidth=a[i,5]
        if indX != 1.5:
           continue
        k=(indX,m)
@@ -88,28 +93,32 @@ class ResultsContainer:
         color=str(cValue)
         #ax.text(-0.5, i, nice_repr(linestyle), **text_style)
         (indX, indY) = k
-        axlabel=self.labelEl1+str(indX) + " ; " + self.labelEl2 + str(indY) 
-        l, = ax.plot(dx, dy, next(linecycler), color=color,label=axlabel) #linestyle=linestyle, color=color, linewidth=3)
+        axlabel=self.labelEl2 + str(indY)
+        #axlabel=self.labelEl1+str(indX) + " ; " + self.labelEl2 + str(indY)
+        ax.xaxis.set_major_locator(MultipleLocator(0.1))
+        ax.set_xlim(1, 2)
+        l, = ax.plot(dx, dy, next(linecycler), color=color,label=axlabel, linewidth=3) #linestyle=linestyle, color=color, linewidth=3)
         lArr.append(l)
         #format_axes(ax)
         #ax.set_title(k)
         i=i+1
      plt.legend(handles=lArr, loc=1)
-     plt.xlabel('m=n')
+     plt.xlabel('y')
      plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-     plt.ylabel('width of the results interval')
+     plt.ylabel('the width of the interval')
      plt.grid(True)
+     plt.grid(True, 'minor')
      plt.show()
 
 
 def main():
     #test()
-    fName='results_pint.txt.csv'
+    fName='results_dint.txt.csv'
     rc = ResultsContainer()
     rc.gatherResultsForM(fName)
-    rc.gatherResultsForPoints(fName)
+    #rc.gatherResultsForPoints(fName)
     rc.rearrangeResults()
-    rc.setLabels("x=", "y=")
+    rc.setLabels("x=", "m=")
     rc.visualizeResults()
     #visualizeFPResults(fName)
 
