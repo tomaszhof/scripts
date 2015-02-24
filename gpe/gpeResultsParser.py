@@ -17,13 +17,13 @@ class ResultFileParser:
     and f.startswith(filesBeg)) ]
     return listOfFiles
    
-  def parseFile(self, fileName):
+  def parseFile(self, dirPath, fileName):
     resBeginLineNo=8
     step=4
-    f = open(fileName)
+    f = open(dirPath+'/'+fileName)
     lines = f.readlines()
     f.close()
-    baseName=basename(fileName)
+    baseName=basename(fileName).split('.')[0]
     nameArr=baseName.split('_')
     gridSize=0
     arthId='none'
@@ -92,16 +92,18 @@ class ResultFileParser:
 
 
 def main():
-  dirPath = sys.
+  dirPath = str(sys.argv[1])
+  print(dirPath)
+  filesExt=str(sys.argv[2])
+  filesBeg=str(sys.argv[3])
+  resultsFileName=str(sys.argv[4])
   p = ResultFileParser()
-  filesExt=".txt"
-  filesBeg="test"
   files = p.getFiles(dirPath, filesExt, filesBeg)
   print(files)
   for fName in files:
     print('Parsing file: ' + fName + '...')
-    p.parseFile(fName)
+    p.parseFile(dirPath, fName)
     print ('file parsed.')
-  p.saveResultsInCsv('results') 
+  p.saveResultsInCsv(resultsFileName) 
 
 if __name__=="__main__":main()

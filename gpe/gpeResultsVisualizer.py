@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from collections import defaultdict, OrderedDict
 from itertools import cycle
+import sys
 
 
 class ResultsContainer:
@@ -113,7 +114,7 @@ class ResultsContainer:
 
 def main():
     #test()
-    fName='results_dint.txt.csv'
+    fName=sys.argv[1] #'results_dint.txt.csv'
     rc = ResultsContainer()
     rc.gatherResultsForM(fName)
     #rc.gatherResultsForPoints(fName)
