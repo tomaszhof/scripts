@@ -13,6 +13,8 @@ class ResultsContainer:
      self.innerDict=OrderedDict()
      self.labelEl1="x="
      self.labelEl2="y="
+     self.fontSize=12
+     self.outputFileName='test.eps'
 
    def addResult(self, k, v):
      if k not in self.innerDict:
@@ -29,6 +31,12 @@ class ResultsContainer:
    def setLabels(self, lEl1, lEl2):
      self.labelEl1=lEl1
      self.labelEl2=lEl2
+   
+   def setFontSize(self, fs):
+     self.fontSize=fs
+   
+   def setOutputFileName(self, ofn):
+     self.outputFileName=ofn
 
    def gatherResultsForPoints(self, fname):
      self.innerDict.clear()
@@ -50,8 +58,9 @@ class ResultsContainer:
        v=(m, intWidth)
        self.addResult(k, v)
 
-   def gatherResultsForM(self, fname):
+   def gatherResultsForMX(self, fname):
      self.innerDict.clear()
+     self.setLabels('y', 'm')
      a = np.genfromtxt(fname, delimiter=';')
      noRows = a.shape[0]
      print(a.shape)
@@ -69,9 +78,30 @@ class ResultsContainer:
        k=(indX,m)
        v=(indY, intWidth)
        self.addResult(k, v)
+   
+   def gatherResultsForMY(self, fname):
+     self.innerDict.clear()
+     self.setLabels('x', 'm')
+     a = np.genfromtxt(fname, delimiter=';')
+     noRows = a.shape[0]
+     print(a.shape)
+     for i in range(noRows):
+       dataTuple=tuple(a[i])
+       (m, indX, indY, leftEnd, rightEnd, intWidth) = dataTuple
+       #m=a[i,0]
+       #indX=float(a[i,1])
+       #indY=float(a[i,2])
+       #leftEnd=a[i,3]
+       #rightEnd=a[i,4]
+       #intWidth=a[i,5]
+       if indY != 1.5:
+          continue
+       k=(indY,m)
+       v=(indX, intWidth)
+       self.addResult(k, v)
 
    def visualizeResults(self):
-     f, ax = plt.subplots()
+     f, ax = plt.subplots(figsize=(4, 3), dpi=300)
      ax.yaxis.set_offset_position('left')
      linestyle = '--'
      color = 'cornflowerblue'
@@ -88,38 +118,52 @@ class ResultsContainer:
      lArr=[]
      for k in self.innerDict:
         (dx, dy) = self.innerDict[k]
-        print(dx)
-        print(dy)
+        #print(dx)
+        #print(dy)
         cValue=float(i)/float(noItems)
         color=str(cValue)
         #ax.text(-0.5, i, nice_repr(linestyle), **text_style)
         (indX, indY) = k
-        axlabel=self.labelEl2 + str(indY)
+        axlabel=self.labelEl2 + '='+ str(int(indY))
+        #print(axlabel)
         #axlabel=self.labelEl1+str(indX) + " ; " + self.labelEl2 + str(indY)
         ax.xaxis.set_major_locator(MultipleLocator(0.1))
         ax.set_xlim(1, 2)
-        l, = ax.plot(dx, dy, next(linecycler), color=color,label=axlabel, linewidth=3) #linestyle=linestyle, color=color, linewidth=3)
+        l, = ax.plot(dx, dy, next(linecycler), ms=5, color=color,label=axlabel, linewidth=2.5) #linestyle=linestyle, color=color, linewidth=3)
         lArr.append(l)
         #format_axes(ax)
         #ax.set_title(k)
         i=i+1
-     plt.legend(handles=lArr, loc=1)
-     plt.xlabel('y')
+     t=ax.yaxis.get_offset_text()
+     t.set_size(self.fontSize)
+     #plt.legend(handles=lArr, fontsize=self.fontSize,  handlelength=5, borderpad=1.5)# loc=1, bbox_to_anchor = (1.5, 0.5))
+     lgd = plt.legend(handles=lArr, fontsize=self.fontSize,  handlelength=3.5, borderpad=1, loc='upper center', bbox_to_anchor=(1.2,1.0))
+     #plt.save('samplefigure', bbox_extra_artists=(lgd,), bbox_inches='tight')
+     plt.xlabel(self.labelEl1, fontsize=self.fontSize)
      plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
-     plt.ylabel('the width of the interval')
+     plt.ylabel('the width of the interval', fontsize=self.fontSize)
+     plt.setp(ax.get_xticklabels(), fontsize=self.fontSize)
+     plt.setp(ax.get_yticklabels(), fontsize=self.fontSize)
      plt.grid(True)
      plt.grid(True, 'minor')
-     plt.show()
-
+     #plt.show()
+     f.savefig(self.outputFileName, bbox_extra_artists=(lgd,), bbox_inches='tight')
 
 def main():
     #test()
-    fName=sys.argv[1] #'results_dint.txt.csv'
+    fName=str(sys.argv[1])
+    mode=str(sys.argv[2])
+    ofName=str(sys.argv[3])
     rc = ResultsContainer()
-    rc.gatherResultsForM(fName)
+    if mode=='x':
+      rc.gatherResultsForMX(fName)
+    else:
+      rc.gatherResultsForMY(fName)
     #rc.gatherResultsForPoints(fName)
     rc.rearrangeResults()
-    rc.setLabels("x=", "m=")
+    #rc.setLabels("x=", 'm')
+    rc.setFontSize(8)
+    rc.setOutputFileName(ofName)
     rc.visualizeResults()
     #visualizeFPResults(fName)
 

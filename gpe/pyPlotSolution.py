@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 
-def plotResults(a1, a2, b1, b2, fname):
+def plotResults(a1, a2, b1, b2, fname, ofname):
   #read data from csv file
   print('Reading data from csv file...')
   a = np.genfromtxt(fname, delimiter=';')
@@ -20,7 +20,7 @@ def plotResults(a1, a2, b1, b2, fname):
   print('done.')
 
   print('Preparing plot...')
-  fig = plt.figure(figsize=(14, 8), dpi=300)
+  fig = plt.figure(figsize=(5, 3), dpi=500)
   ax = fig.gca(projection='3d')
   X = np.arange(a1, a2, stepX)
   Y = np.arange(b1, b2, stepY)
@@ -35,7 +35,7 @@ def plotResults(a1, a2, b1, b2, fname):
   zAxisFormatter = ScalarFormatter()
   zAxisFormatter.set_scientific(True)
   zAxisFormatter.set_powerlimits((0, 1))
-  ax.zaxis.set_major_formatter(zAxisFormatter)
+  #ax.zaxis.set_major_formatter(zAxisFormatter)
   print('Drawing...')
   fontSize=8 #set fontsize on plot
   ax.set_xlabel('x', fontsize=fontSize)
@@ -43,6 +43,12 @@ def plotResults(a1, a2, b1, b2, fname):
   ax.zaxis.set_rotate_label(False)
   ax.set_zlabel('u(x,y)', fontsize=fontSize, rotation=90)
   ax.view_init(27, 35)
+  t = ax.zaxis.get_offset_text()
+  t.set_size(fontSize-2)
+  #t.set_position((0,0))
+  t.set_rotation(45)
+  t.set_verticalalignment('center')
+  #t.set_z(0)
   plt.setp(ax.get_xticklabels(), fontsize=fontSize)
   plt.setp(ax.get_yticklabels(), fontsize=fontSize)
   plt.setp(ax.get_zticklabels(), fontsize=fontSize)
@@ -50,8 +56,8 @@ def plotResults(a1, a2, b1, b2, fname):
   cbar=fig.colorbar(surf, shrink=0.75, aspect=15)
   cbar.ax.tick_params(labelsize=fontSize)
   
-  plt.show()
-  plt.savefig(filename='plot.eps', format='eps')
+  #plt.show()
+  plt.savefig(filename=ofname, format='eps')
   plt.close()
 
 def main():
@@ -59,7 +65,8 @@ def main():
   alpha2 = float(sys.argv[2])
   beta1 = float(sys.argv[3])
   beta2 = float(sys.argv[4])
-  fname = sys.argv[5]
-  plotResults(alpha1, alpha2, beta1, beta2, fname)
+  fname = str(sys.argv[5])
+  ofname = str(sys.argv[6])
+  plotResults(alpha1, alpha2, beta1, beta2, fname, ofname)
 
 if __name__=="__main__":main()
