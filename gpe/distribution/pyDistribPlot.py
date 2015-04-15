@@ -10,12 +10,12 @@ from matplotlib.ticker import FormatStrFormatter
 def plot_hist(fnames):
   fontSize=3
   fig, ax = plt.subplots(2, 2, figsize=(5, 3), dpi=500)
-  plt.xlim(0.0, 1.0)
+  #plt.xlim(0.0, 1.0)
   k = 0
   for i in range(2):
   	for j in range(2):
   		sub1 = ax[i][j]
-  		sub1.set_xlim(0.0, 1.0)
+  		#sub1.set_xlim(-1.0, 2.0)
   		fname = fnames[k]
   		k = k + 1
   		M = genfromtxt(fname, delimiter=';')
