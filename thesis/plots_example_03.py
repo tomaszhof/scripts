@@ -26,12 +26,26 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
     return new_cmap
 
 def u(x,y):
-    c1 = np.exp(3.0*x)
-    s1 = np.sin(3.0*y)
-    return np.multiply(c1, s1)
+    s1 = np.sin(np.pi*x)
+    s2 = np.sin(np.pi*y)
+    return np.multiply(s1, s2)
 
+def f(x,y):
+    #-1.0*M_PI*M_PI*x*y*(std::exp(x)*sinXsinY + std::exp(y)*sinXsinY);
+    s1 = np.sin(np.pi*x)
+    s2 = np.sin(np.pi*y)
+    c = -1.0*np.pi*np.pi
+    cxy = c*np.multiply(x,y)
+    
+    sinXsinY = np.multiply(s1,s2)
+    ex = np.exp(x)
+    ey = np.exp(y)
 
-def plot_example03():
+    p1 = np.multiply(ex,sinXsinY)
+    p2 = np.multiply(ey,sinXsinY)
+    return np.multiply(cxy, np.add(p1,p2))
+
+def plot_example03f():
     fig = plt.figure(figsize=(12.5,8))
     fig.subplots_adjust(top=0.96,
         bottom=0.035,
@@ -42,25 +56,25 @@ def plot_example03():
     ax = fig.gca(projection='3d')
 
     # Make data.
-    X = np.arange(0.0, 1.05, 0.05)
-    Y = np.arange(0.0, 1.05, 0.05)
+    X = np.arange(0.0, 2.05, 0.05)
+    Y = np.arange(0.0, 2.05, 0.05)
     X, Y = np.meshgrid(X, Y)
-    Z = u(X,Y)
+    Z = f(X,Y)
 
     # Plot the surface.
     #get only part (20-100%) of the gray scale colormap
     cmap = truncate_colormap(cm.gray_r, 0.2, 1.0)
-    surf = ax.plot_surface(X, Y, Z, cmap=cmap, vmin=0.0, vmax=20,
+    surf = ax.plot_surface(X, Y, Z, cmap=cmap, vmin=-250.1, vmax=60.1,
                         linewidth=0, antialiased=True)
 
     # Customize the z axis.
-    ax.set_zlim(0.0, 20)
+    ax.set_zlim(-250.1, 60.0)
     ax.zaxis.set_major_locator(LinearLocator(10))
     ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
     ax.set_xlabel('X', fontsize=20, labelpad=20)
-    ax.set_xlim(-0.1, 1.1)
+    ax.set_xlim(-0.1, 2.1)
     ax.set_ylabel('Y', fontsize=20, labelpad=20)
-    ax.set_ylim(-0.1, 1.1)
+    ax.set_ylim(-0.1, 2.1)
     ax.set_zlabel('Z', fontsize=20, labelpad=17)
     ax.xaxis.set_tick_params(labelsize=18, pad=5)
     ax.yaxis.set_tick_params(labelsize=18, pad=5)
@@ -74,10 +88,57 @@ def plot_example03():
     plt.xticks(fontsize=18)
     plt.yticks(fontsize=18)
     #plt.tight_layout(pad=0.05)
-    plt.savefig('/home/tomhof/stuff/example02.pdf', bbox_inches='tight', pad_inches=0.0, dpi=300)
+    plt.savefig('/home/tomhof/stuff/example03f.pdf', bbox_inches='tight', pad_inches=0.0, dpi=300)
     plt.show()
+
+def plot_example03():
+    fig = plt.figure(figsize=(12.5,8))
+    fig.subplots_adjust(top=0.96,
+        bottom=0.035,
+        left=0.0,
+        right=0.84,
+        hspace=0.2,
+        wspace=0.2)
+    ax = fig.gca(projection='3d')
+
+    # Make data.
+    X = np.arange(0.0, 2.05, 0.05)
+    Y = np.arange(0.0, 2.05, 0.05)
+    X, Y = np.meshgrid(X, Y)
+    Z = u(X,Y)
+
+    # Plot the surface.
+    #get only part (20-100%) of the gray scale colormap
+    cmap = truncate_colormap(cm.gray_r, 0.2, 1.0)
+    surf = ax.plot_surface(X, Y, Z, cmap=cmap, vmin=-1.1, vmax=1.1,
+                        linewidth=0, antialiased=True)
+
+    # Customize the z axis.
+    ax.set_zlim(-1.1, 1.1)
+    ax.zaxis.set_major_locator(LinearLocator(10))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+    ax.set_xlabel('X', fontsize=20, labelpad=20)
+    ax.set_xlim(-0.1, 2.1)
+    ax.set_ylabel('Y', fontsize=20, labelpad=20)
+    ax.set_ylim(-0.1, 2.1)
+    ax.set_zlabel('Z', fontsize=20, labelpad=17)
+    ax.xaxis.set_tick_params(labelsize=18, pad=5)
+    ax.yaxis.set_tick_params(labelsize=18, pad=5)
+    ax.zaxis.set_tick_params(labelsize=18, pad=10)
+
+    # Add a color bar which maps values to colors.
+    cax = fig.add_axes([ax.get_position().x1+0.0018,ax.get_position().y0+0.04,0.04,ax.get_position().height*0.8])
+
+
+    fig.colorbar(surf, cax=cax, shrink=0.5, aspect=5)
+    plt.xticks(fontsize=18)
+    plt.yticks(fontsize=18)
+    #plt.tight_layout(pad=0.05)
+    plt.savefig('/home/tomhof/stuff/example03.pdf', bbox_inches='tight', pad_inches=0.0, dpi=300)
+    plt.show()
+
 def plot_example03_width():
-    #EXAMPLE 03
+    #EXAMPLE 05
 
     x = np.arange(10, 110, 10)
     x_major_ticks = np.arange(10, 110, 20)
@@ -116,7 +177,7 @@ def plot_example03_width():
 
 
 def plot_example03_comp_interval():
-    #EXAMPLE 03
+    #EXAMPLE 05
 
     x = np.arange(10, 110, 10)
     x_major_ticks = np.arange(10, 110, 20)
@@ -163,7 +224,7 @@ def plot_example03_gpe2nd_constans():
     #EXAMPLE 03 GPE2nd - CONSTANS
 
     x = np.arange(10.0, 120, 10)
-    x_major_ticks = x #np.arange(10.0, 120, 20)
+    x_major_ticks = np.arange(10.0, 120, 20)
     x_minor_ticks = x
     
 
@@ -195,7 +256,7 @@ def plot_example03_gpe4th_constans():
     #EXAMPLE 03 GPE4th - CONSTANS
 
     x = np.arange(10.0, 120, 10)
-    x_major_ticks = x #np.arange(10.0, 120, 20)
+    x_major_ticks = np.arange(10.0, 120, 20)
     x_minor_ticks = x
 
 
@@ -257,9 +318,10 @@ def plot_example03_gpe4th_constans():
 
 def main():
     #plot_example03()
+    plot_example03f()
     #plot_example03_width()
     #plot_example03_comp_interval()
     #plot_example03_gpe2nd_constans()
-    plot_example03_gpe4th_constans()
+    #plot_example03_gpe4th_constans()
 
 if __name__=="__main__":main()
