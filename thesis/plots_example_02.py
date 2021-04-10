@@ -167,8 +167,10 @@ def plot_example02_gpe2nd_constans():
     x_minor_ticks = x
     
 
-    m_const = [7.17777, 11.31, 12.8514, 13.6433, 14.1236, 14.4455, 14.6888, 14.8778, 15.0237, 15.1408, 15.2433]
-    lim_m_const = [16.27, 16.27, 16.27, 16.27, 16.27, 16.27, 16.27, 16.27, 16.27, 16.27, 16.27]
+    
+
+    m_const = [9.66106, 9.7209, 9.73201, 9.7359, 9.7377, 9.73868, 9.73927, 9.73966, 9.73992, 9.74011, 9.74025]
+    lim_m_const = [9.75, 9.75, 9.75, 9.75, 9.75, 9.75, 9.75, 9.75, 9.75, 9.75, 9.75]
 
     fig, ax = plt.subplots(figsize=(11,4))
 
@@ -181,7 +183,8 @@ def plot_example02_gpe2nd_constans():
 
     ax.legend((l_lim_m_const,l_m_const ), ('M', 'approx M'), loc='lower right', shadow=True, fontsize=18)
     ax.set_xlabel('m=n', fontsize=20)
-    ax.set_ylabel('[x $10^2$]', fontsize=20)
+    ax.set_ylabel('[x $10$]', fontsize=20)
+    ax.set_ylim(9.6, 9.76)
     ax.set_xticks(x_major_ticks)
     ax.set_xticks(x_minor_ticks, True)
     ax.grid(which='major', color='gray', linestyle='--')
@@ -192,7 +195,7 @@ def plot_example02_gpe2nd_constans():
     plt.show()
 
 def plot_example02_gpe4th_constans():
-    #EXAMPLE 03 GPE4th - CONSTANS
+    #EXAMPLE 02 GPE4th - CONSTANS
 
     x = np.arange(10.0, 120, 10)
     x_major_ticks = np.arange(10.0, 120, 20)
@@ -203,11 +206,12 @@ def plot_example02_gpe4th_constans():
 
 
 
-    m_const = [3.72832, 8.42268, 10.3715,11.4028,12.0363,12.4639,12.7714,13.0032,13.184,13.3289,13.4477]
-    lim_m_const = [14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643]
 
-    n_const = [3.67281, 8.39116, 10.3542,11.3921,12.0291,12.4587,12.7675,13.0001,13.1815,13.3269,13.4461]
-    lim_n_const = [14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643,14.643]
+    m_const = [9.34215, 9.54502, 9.5832, 9.59661, 9.60283, 9.60621, 9.60825, 9.60957, 9.61048, 9.61112, 9.6116]
+    lim_m_const = [9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614]
+
+    n_const = [9.34215, 9.54502, 9.5832, 9.59661, 9.60283, 9.60621, 9.60825, 9.60957, 9.61048, 9.61112, 9.6116]
+    lim_n_const = [9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614, 9.614]
 
     fig, (ax1, ax2) = plt.subplots(2,1, figsize=(11,8))
 
@@ -224,9 +228,9 @@ def plot_example02_gpe4th_constans():
     #l2, l3 = ax.plot(t2, np.sin(2 * np.pi * t2), '--o', t1, np.log(1 + t1), '.')
     #l4, = ax.plot(t2, np.exp(-t2) * np.sin(2 * np.pi * t2), 's-.')
 
-    ax1.legend((l_lim_m_const,l_m_const ), ('M', 'approx M'), loc='lower right', shadow=True, fontsize=20)
+    ax1.legend((l_lim_m_const,l_m_const ), ('P', 'approx P'), loc='lower right', shadow=True, fontsize=20)
     ax1.set_xlabel('m=n', fontsize=20)
-    ax1.set_ylabel('[x $10^3$]', fontsize=20)
+    ax1.set_ylabel('[x $10^2$]', fontsize=20)
     ax1.set_xticks(x_major_ticks)
     ax1.set_xticks(x_minor_ticks, True)
     ax1.grid(which='major', color='gray', linestyle='--')
@@ -242,9 +246,9 @@ def plot_example02_gpe4th_constans():
     ax2.grid(which='major', color='gray', linestyle='--')
     ax2.grid(which='minor', color='gray', linestyle=':')
     #ax2.set_title('const R')
-    ax2.legend((l_lim_n_const,l_n_const ), ('N', 'approx N'), loc='lower right', shadow=True, fontsize=20)
+    ax2.legend((l_lim_n_const,l_n_const ), ('Q', 'approx Q'), loc='lower right', shadow=True, fontsize=20)
     ax2.set_xlabel('m=n', fontsize=20)
-    ax2.set_ylabel('[x $10^3$]', fontsize=20)
+    ax2.set_ylabel('[x $10^2$]', fontsize=20)
     ax2.set_xlim(10, 100)
     ax2.tick_params(axis='both', which='major', labelsize=18)
     ax2.tick_params(axis='both', which='minor', labelsize=18)
@@ -256,10 +260,10 @@ def plot_example02_gpe4th_constans():
     plt.show()
 
 def main():
-    plot_example02()
+    #plot_example02()
     #plot_example02_width()
     #plot_example02_comp_interval()
-    #plot_example02_gpe2nd_constans()
+    plot_example02_gpe2nd_constans()
     #plot_example02_gpe4th_constans()
 
 if __name__=="__main__":main()

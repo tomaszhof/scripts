@@ -224,7 +224,7 @@ def plot_example01_gpe4th_constans():
     #l2, l3 = ax.plot(t2, np.sin(2 * np.pi * t2), '--o', t1, np.log(1 + t1), '.')
     #l4, = ax.plot(t2, np.exp(-t2) * np.sin(2 * np.pi * t2), 's-.')
 
-    ax1.legend((l_lim_m_const,l_m_const ), ('M', 'approx M'), loc='lower right', shadow=True, fontsize=20)
+    ax1.legend((l_lim_m_const,l_m_const ), ('P', 'approx P'), loc='lower right', shadow=True, fontsize=20)
     ax1.set_xlabel('m=n', fontsize=20)
     ax1.set_ylabel('[x $10^3$]', fontsize=20)
     ax1.set_xticks(x_major_ticks)
@@ -242,7 +242,7 @@ def plot_example01_gpe4th_constans():
     ax2.grid(which='major', color='gray', linestyle='--')
     ax2.grid(which='minor', color='gray', linestyle=':')
     #ax2.set_title('const R')
-    ax2.legend((l_lim_n_const,l_n_const ), ('N', 'approx N'), loc='lower right', shadow=True, fontsize=20)
+    ax2.legend((l_lim_n_const,l_n_const ), ('Q', 'approx Q'), loc='lower right', shadow=True, fontsize=20)
     ax2.set_xlabel('m=n', fontsize=20)
     ax2.set_ylabel('[x $10^3$]', fontsize=20)
     ax2.set_xlim(10, 100)
